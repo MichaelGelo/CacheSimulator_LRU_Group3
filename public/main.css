@@ -62,7 +62,7 @@ main {
     padding-top:3px;
     border-radius: 8px;
     box-shadow: 0px 4px 5px -4px #C1ACBA;
-    width: 80%;
+    width: 100%;
     max-width: 800px;
     margin-bottom: 10px;
 }
@@ -122,13 +122,12 @@ pre {
 }
 
 .input-output {
-    width: 40%;
+    width: 30%;
     margin-left: 0;
     padding:0;
+    margin-right:75px;
 }
 .simul {
-    width: 60%;
-    margin-right: 0;
     display:flex;
 }
 
@@ -158,59 +157,108 @@ pre {
     font-size:10px;
 }
 
-.box {
-    flex: 1;
-    margin: 10px;
-    border: 1px solid #000;
-    padding: 10px;
-    overflow-y: auto;
+.memory-box {
+    width: 50%;
+    overflow-x: auto;
 }
 
-.left-box {
-    flex: 1;
-    margin-right: 10px;
+#memory-block {
+    border-radius: 8px; 
     border: 1px solid #000;
     background-color: #04522d;
     padding: 10px;
-    box-sizing: border-box;
+}
+
+.memory-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    color:black;
+}
+
+.memory-table th, .memory-table td {
+    padding: 8px;
+    text-align: center;
+
+}
+
+.memory-table th {
+    background-color: #f4f4f4;
+
+}
+
+.memory-table td {
+    background-color: #ffffff;
+
+}
+
+.highlight {
+    color: red !important;
+}
+
+.cache-block {
+    width: 50%;
+    overflow-x: auto;
+    margin-right: 50px;
 }
 
 #cache-table {
     width: 100%;
     border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    color:black;
 }
 
 #cache-table th, #cache-table td {
-    border: 1px solid #04522d;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
-#memory-block {
-    border: 1px solid #000;
-    background-color: #04522d;
-    padding: 10px;
-    box-sizing: border-box;
+#cache-table th {
+    background-color: #f4f4f4;
+
 }
 
-.memory-table {
-    border: 1px solid #000;
-    background-color: #04522d;
-    width: 100%;
-    border-collapse: collapse;
+#cache-table td {
+    background-color: #ffffff;
 }
 
-.memory-table th, .memory-table td {
-    border: 1px solid #000;
-    padding: 8px;
-    text-align: left;
-    color: white;
+#cache-table tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-.memory-table th {
-    color: white;
+.blocks {
+    width: 60%;
+    margin: 0 auto; 
 }
 
-.highlight {
-    background-color: rgb(10, 62, 30); /* Change this to the color you prefer */
+button.simul-button {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    width: 20%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; 
+    gap: 20px;
+    margin-bottom: 20px; 
+}
+
+.crossed-out {
+    text-decoration: line-through;
+    color: gray; /* Optional: adjust color for better visibility */
+}
+
+#block-display{
+    display: none;
+}
+
+.eqw{
+    width:33.3333333%;
 }

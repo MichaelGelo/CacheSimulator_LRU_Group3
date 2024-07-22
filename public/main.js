@@ -14,7 +14,7 @@ class CacheSimulator {
         this.simulatedFlow = [];
         this.programFlow = [];
         this.simulated = false;
-        this.visualizedSteps = 0; // Added to keep track of visualized steps
+        this.visualizedSteps = 0; // ctr
     }
 
     addProgramFlow(mmBlock) {
@@ -22,79 +22,117 @@ class CacheSimulator {
     }
 
     simulate() {
-        const newSimulatedFlow = []; // Temporary storage for new simulation steps
+        this.simulatedFlow = []; // Clear previous simulation steps
         const newProgramFlow = this.programFlow.slice(this.simulatedFlow.length);
-
+        
         newProgramFlow.forEach(mmBlock => {
+            this.simulatedFlow.push({ mmBlock, hit: null });
+        });
+        
+        this.simulated = true;
+    }
+    
+    nextStep() {
+        if (!this.simulated) {
+            alert('Please run the simulation first.');
+            return;
+        }
+        
+        if (this.visualizedSteps < this.simulatedFlow.length) {
+            const step = this.simulatedFlow[this.visualizedSteps];
             let hit = false;
-
+            let modifiedBlock = null;
+        
             // Check for hit
             this.cache.forEach(block => {
-                if (block.mmBlock === mmBlock) {
+                if (block.mmBlock === step.mmBlock) {
                     hit = true;
                     this.hits++;
-                    // Get the age of the accessed block
                     const accessedAge = block.age;
-                    // Increment the age of blocks with age less than accessedAge
                     this.cache.forEach(b => {
                         if (b.age < accessedAge) {
                             b.age++;
                         }
                     });
-                    // Reset the age of the accessed block
                     block.age = 0;
+                    modifiedBlock = block; // Mark this block as modified
                 }
             });
-
+        
             // Handle miss
             if (!hit) {
                 this.misses++;
-                // Find the oldest block to replace
                 let oldestBlock = this.cache.reduce((oldest, block) => {
                     return block.age > oldest.age ? block : oldest;
                 }, this.cache[0]);
-
-                // Replace the oldest block with the new value
-                oldestBlock.mmBlock = mmBlock;
+        
+                oldestBlock.mmBlock = step.mmBlock;
                 oldestBlock.age = 0;
-
-                // Increment the age of all other blocks
+                modifiedBlock = oldestBlock; // Mark this block as modified
+        
                 this.cache.forEach(block => {
                     if (block !== oldestBlock) {
                         block.age++;
                     }
                 });
             }
-
-            newSimulatedFlow.push({ mmBlock, hit });
-        });
-
-        this.simulatedFlow = this.simulatedFlow.concat(newSimulatedFlow); // Append new steps to the simulated flow
-        this.simulated = true;
-    }
-
-    nextStep() {
-        if (this.visualizedSteps < this.simulatedFlow.length) {
-            const step = this.simulatedFlow[this.visualizedSteps];
+        
+            step.hit = hit; // Update hit/miss status
+        
+            // Update Memory Block Table
             const memoryBlockTable = document.getElementById('memory-block');
-            const newRow = memoryBlockTable.insertRow();
-            newRow.insertCell(0).textContent = step.mmBlock;
-            newRow.insertCell(1).textContent = step.hit ? 'Yes' : '';
-            newRow.insertCell(2).textContent = step.hit ? '' : 'Yes';
-
-            // Add highlight class to the new row
-            newRow.classList.add('highlight');
-
-            // Remove highlight from the previous row if any
-            if (memoryBlockTable.rows.length > 1) {
-                const previousRow = memoryBlockTable.rows[memoryBlockTable.rows.length - 2];
-                previousRow.classList.remove('highlight');
+            Array.from(memoryBlockTable.rows).forEach(row => row.classList.remove('highlight'));
+        
+            let memoryRow = memoryBlockTable.rows[this.visualizedSteps];
+            if (!memoryRow) {
+                memoryRow = memoryBlockTable.insertRow();
             }
-
-            this.visualizedSteps++; // Increment visualized steps count
+            memoryRow.innerHTML = '';
+            memoryRow.insertCell(0).textContent = step.mmBlock;
+            memoryRow.insertCell(1).textContent = step.hit ? 'Yes' : '';
+            memoryRow.insertCell(2).textContent = step.hit ? '' : 'Yes';
+        
+            memoryRow.classList.add('highlight');
+        
+            // Update Cache Block Table
+            const cacheBlockTable = document.getElementById('cache-tbody');
+            cacheBlockTable.innerHTML = '';
+        
+            this.cache.forEach((block, index) => {
+                let cacheRow = cacheBlockTable.insertRow();
+                cacheRow.insertCell(0).textContent = block.cacheBlock;
+                cacheRow.insertCell(1).textContent = block.age;
+                cacheRow.insertCell(2).textContent = block.mmBlock !== null ? block.mmBlock : '';
+            });
+        
+            // Highlight the modified block in the cache block table
+            const cacheRows = cacheBlockTable.rows;
+            Array.from(cacheRows).forEach(row => row.classList.remove('highlight'));
+        
+            if (modifiedBlock) {
+                const modifiedRowIndex = this.cache.indexOf(modifiedBlock);
+                if (cacheRows[modifiedRowIndex]) {
+                    cacheRows[modifiedRowIndex].classList.add('highlight');
+                }
+            }
+        
+            this.visualizedSteps++;
         }
+        
+        const results = simulator.getResults();
+        const resultsText = 
+    `Cache Hits: ${results.hits}
+    Cache Misses: ${results.misses}
+    Miss Penalty: ${results.missPenalty} ns
+    Average Memory Access Time: ${results.avgAccessTime.toFixed(2)} ns
+    Total Memory Access Time: ${results.totalAccessTime} ns
+    Cache Snapshot: \n     ${results.cacheSnapshot.join('\n     ')}`;
+        
+        document.getElementById('results').textContent = resultsText;
+        document.getElementById('result-display').style.display = 'block';
     }
-
+    
+    
     getResults() {
         const totalAccesses = this.hits + this.misses;
         const totalCacheAccessTime = this.hits * this.cacheAccessTime;
@@ -105,7 +143,7 @@ class CacheSimulator {
         const cacheSnapshot = this.cache.map(block => {
             return `Cache Block: ${block.cacheBlock}, MM Block: ${block.mmBlock}`;
         });
-
+    
         return {
             hits: this.hits,
             misses: this.misses,
@@ -115,24 +153,36 @@ class CacheSimulator {
             cacheSnapshot: cacheSnapshot
         };
     }
+    
 }
 
 let simulator = new CacheSimulator(4, 1, 10, 2); // Default values
 
 function addProgramFlow() {
-    const mmBlock = parseInt(document.getElementById('program-flow-input').value);
-    if (!isNaN(mmBlock)) {
-        simulator.addProgramFlow(mmBlock);
-        document.getElementById('program-flow-display').textContent = simulator.programFlow.join(', ');
-        document.getElementById('program-flow-input').value = '';
+    const inputElement = document.getElementById('program-flow-input');
+    const mmBlock = parseInt(inputElement.value);
+
+    if (isNaN(mmBlock)) {
+        alert('Please enter a valid number.');
+        return;
     }
+
+    simulator.addProgramFlow(mmBlock);
+    document.getElementById('program-flow-display').textContent = simulator.programFlow.join(', ');
+    inputElement.value = '';
 }
+
 
 function simulateCache() {
     const cacheSize = parseInt(document.getElementById('cache-size').value);
     const blockSize = parseInt(document.getElementById('block-size').value);
     const cacheAccessTime = parseInt(document.getElementById('cache-access-time').value);
     const memoryAccessTime = parseInt(document.getElementById('memory-access-time').value);
+
+    if (simulator.programFlow.length === 0) {
+        alert('Program flow has no inputs.');
+        return;
+    }
 
     if (!simulator.simulated) {
         simulator = new CacheSimulator(cacheSize, cacheAccessTime, memoryAccessTime, blockSize);
@@ -143,19 +193,10 @@ function simulateCache() {
 
     newInputs.forEach(mmBlock => simulator.addProgramFlow(mmBlock));
     simulator.simulate();
-
-    const results = simulator.getResults();
-    const resultsText = 
-`Cache Hits: ${results.hits}
-Cache Misses: ${results.misses}
-Miss Penalty: ${results.missPenalty} ns
-Average Memory Access Time: ${results.avgAccessTime.toFixed(2)} ns
-Total Memory Access Time: ${results.totalAccessTime} ns
-Cache Snapshot: \n     ${results.cacheSnapshot.join('\n     ')}`;
-    document.getElementById('results').textContent = resultsText;
-
-    document.getElementById('result-display').style.display = 'block';
+    document.getElementById('block-display').style.display = 'block';
 }
+
+
 
 function saveResults() {
     const resultsText = document.getElementById('results').textContent;
@@ -177,6 +218,7 @@ function nextStep() {
 function resetSimulation() {
     simulator = new CacheSimulator(4, 1, 10, 2); // Reset with default values
     document.getElementById('program-flow-display').textContent = '';
+    document.getElementById('cache-tbody').innerHTML = '';
     document.getElementById('memory-block').innerHTML = '';
     document.getElementById('result-display').style.display = 'none';
 }
