@@ -240,6 +240,7 @@ button.simul-button {
     color: black;
     font-weight: bold;
     width: 20%;
+    margin-top:0;
 }
 
 .button-container {
