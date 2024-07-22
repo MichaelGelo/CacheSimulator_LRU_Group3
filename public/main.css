@@ -249,11 +249,6 @@ button.simul-button {
     margin-bottom: 20px; 
 }
 
-.crossed-out {
-    text-decoration: line-through;
-    color: gray; /* Optional: adjust color for better visibility */
-}
-
 #block-display{
     display: none;
 }
