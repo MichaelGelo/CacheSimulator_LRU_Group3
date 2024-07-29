@@ -19,6 +19,7 @@ To properly run and initiate the web-based cache simulator, simply follow the st
 2. Run the command: *node app.js* into your terminal input to start the web-based application.
 3. Once the command has succesfully executed, open your web browser of choice.
 4. Type into the address bar: *localhost:3000*
+5. You now have access to the web-based Cache Simulator!
 
 ## Input Parameters
 - Block Size
