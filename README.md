@@ -1,4 +1,4 @@
-
+Magdadagdag pa ako ng info after ng final iteration ng project.
 # Cache Simulator (LRU / Full Associativity)
 Authors: 
 - **Agustines**, Alfred Bastin
@@ -33,3 +33,5 @@ To properly run and initiate the web-based cache simulator, simply follow the st
 - Average Memory Access Time
 - Total Memory Access Time
 - Snapshot of the Cache Memory
+
+## 
