@@ -11,12 +11,24 @@
                             <input type="number" id="block-size" value="2" min="1">
                         </div>
                         <div class="form-group">
-                            <label for="mm-size">MM Size (blocks):</label>
-                            <input type="number" id="mm-size" value="256" min="1">
+                            <label for="mm-size">MM Size:</label>
+                            <div class="input-with-dropdown">
+                                <input type="number" id="mm-size" value="256" min="1">
+                                <select id="mm-size-unit">
+                                    <option value="blocks">blocks</option>
+                                    <option value="words">words</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="cache-size">Cache Size (blocks):</label>
-                            <input type="number" id="cache-size" value="4" min="1">
+                            <label for="cache-size">Cache Size:</label>
+                            <div class="input-with-dropdown">
+                                <input type="number" id="cache-size" value="4" min="1">
+                                <select id="cache-size-unit">
+                                    <option value="blocks">blocks</option>
+                                    <option value="words">words</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="program-flow">Program Flow:</label>
@@ -58,9 +70,9 @@
                                     <th colspan="3">Cache Block</th>
                                 </tr> 
                                 <tr>
-                                    <th class = "eqw" >Block</th>
-                                    <th class = "eqw">Age</th>
-                                    <th class = "eqw">Data</th>
+                                    <th class="eqw">Block</th>
+                                    <th class="eqw">Age</th>
+                                    <th class="eqw">Data</th>
                                 </tr>
                             </thead>
                             <tbody id="cache-tbody">
@@ -70,16 +82,15 @@
                     </div>
 
                     <div class="memory-box">
-                        
                         <table class="memory-table">
                             <thead>
                                 <tr>
                                     <th colspan="3">Memory Block</th>
                                 </tr> 
                                 <tr>
-                                    <th class = "eqw">Data</th>
-                                    <th class = "eqw">Hit</th>
-                                    <th class = "eqw">Miss</th>
+                                    <th class="eqw">Data</th>
+                                    <th class="eqw">Hit</th>
+                                    <th class="eqw">Miss</th>
                                 </tr>
                             </thead>
                             <tbody id="memory-block">
@@ -88,13 +99,7 @@
                         </table>
                     </div>
                 </div>
-
-
-        </div>
-
-
+            </div>
         </div>
     </main>
-
-
 </body>

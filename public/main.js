@@ -161,6 +161,10 @@ let simulator = new CacheSimulator(4, 1, 10, 2); // Default values
 function addProgramFlow() {
     const inputElement = document.getElementById('program-flow-input');
     const mmBlock = parseInt(inputElement.value);
+    if (mmBlock < 0 || mmBlock >= simulator.mmSize) {
+        alert('Program flow block out of range.');
+        return;
+    }
 
     if (isNaN(mmBlock)) {
         alert('Please enter a valid number.');
@@ -172,12 +176,38 @@ function addProgramFlow() {
     inputElement.value = '';
 }
 
+function isPowerOfTwo(num) {
+    return num > 0 && (num & (num - 1)) === 0;
+}
 
 function simulateCache() {
-    const cacheSize = parseInt(document.getElementById('cache-size').value);
+    const cacheSizeInput = parseInt(document.getElementById('cache-size').value);
+    const cacheSizeUnit = document.getElementById('cache-size-unit').value;
+    const mmSizeInput = parseInt(document.getElementById('mm-size').value);
+    const mmSizeUnit = document.getElementById('mm-size-unit').value;
     const blockSize = parseInt(document.getElementById('block-size').value);
     const cacheAccessTime = parseInt(document.getElementById('cache-access-time').value);
     const memoryAccessTime = parseInt(document.getElementById('memory-access-time').value);
+
+    let cacheSize = cacheSizeUnit === 'words' ? Math.ceil(cacheSizeInput / blockSize) : cacheSizeInput;
+    let mmSize = mmSizeUnit === 'words' ? Math.ceil(mmSizeInput / blockSize) : mmSizeInput;
+
+    if (!isPowerOfTwo(cacheSize)) {
+        alert('Cache size must be a power of 2.');
+        return;
+    }
+
+    if (!isPowerOfTwo(blockSize) || (blockSize > cacheSize && cacheSizeUnit === 'words')) {
+        alert('Block size must be a power of 2 and less than or equal to cache size in words.');
+        return;
+    }
+
+    const newProgramFlow = [...document.getElementById('program-flow-display').textContent.split(', ').map(Number)];
+
+    if (newProgramFlow.length > mmSize) {
+        alert('Number of program flow inputs exceeds the main memory size.');
+        return;
+    }
 
     if (simulator.programFlow.length === 0) {
         alert('Program flow has no inputs.');
@@ -188,7 +218,6 @@ function simulateCache() {
         simulator = new CacheSimulator(cacheSize, cacheAccessTime, memoryAccessTime, blockSize);
     }
 
-    const newProgramFlow = [...document.getElementById('program-flow-display').textContent.split(', ').map(Number)];
     const newInputs = newProgramFlow.slice(simulator.programFlow.length);
 
     newInputs.forEach(mmBlock => simulator.addProgramFlow(mmBlock));
