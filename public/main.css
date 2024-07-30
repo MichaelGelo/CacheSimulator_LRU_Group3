@@ -50,8 +50,22 @@ main {
     align-items: center;
 }
 
-#block-size, #mm-size, #cache-size, #program-flow, #miss-penalty {
-    padding: 6px;
+#block-size, #mm-size, #cache-size, #program-flow, #miss-penalty,#program-flow-input {
+    padding: 6px !important;
+    font-size: 13.3333px;
+    margin-right: 10px;
+}
+
+select,option{
+color: #ffffff;
+font-family: "Source Code Pro", monospace;
+font-size: 13.3333px !important;
+font-style: normal;
+font-weight: 700;
+height:29.31px;
+background-color: #03391e !important;
+width: 20%;
+border-radius: 4px !important;
 }
 
 .input-section, .result-display {
@@ -156,7 +170,7 @@ main {
 
 button {
     display: block;
-    width: 100%;
+    width: 20% !important;
     padding: 10px;
     background-color: #04522d;
     color: white;
@@ -165,6 +179,9 @@ button {
     cursor: pointer;
     font-size: 14px;
     margin-top: 10px;
+    font-family: "Source Code Pro", monospace;
+    font-weight: bold;
+
 }
 
 button:hover {
