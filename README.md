@@ -21,6 +21,8 @@ To properly run and initiate the web-based cache simulator, simply follow the st
 4. Type into the address bar: *localhost:3000*
 5. You now have access to the web-based Cache Simulator!
 
+If you've followed every step and the application is still not running, then you may have to take an alternative route in installing Node.js. For this, simply follow the installation guide of **Node Version Manager**, or nvm, which can be accessed here: https://github.com/nvm-sh/nvm
+
 ## Input Parameters
 - Block Size
 - MM Memory Size
@@ -35,4 +37,5 @@ To properly run and initiate the web-based cache simulator, simply follow the st
 - Total Memory Access Time
 - Snapshot of the Cache Memory
 
-## 
+## User Interface
+![App Screenshot](https://github.com/MichaelGelo/CacheSimulator_LRU_Group3/blob/main/Test%20Case.png)
