@@ -35,6 +35,8 @@ If you've followed every step and the application is still not running, then you
 - Average Memory Access Time
 - Total Memory Access Time
 - Snapshot of the Cache Memory
+## Documentation
+- https://drive.google.com/file/d/1X_2qIAPS_V7CcTZ0_tpESesAnmq6zYkd/view?usp=sharing
 ## Video Demonstration
 - https://drive.google.com/file/d/1VzuuDGxRW0OAKdetO8CPUOQfxG-eJGZf/view?usp=sharing
 ## User Interface
