@@ -41,5 +41,3 @@ If you've followed every step and the application is still not running, then you
 ![App Screenshot](https://github.com/MichaelGelo/CacheSimulator_LRU_Group3/blob/main/Test%20Case.png)
 
 The web-based cache simulation can seen being utilized in the screenshot above. The program flow of 1, 2, 2, 5, 4, 7, 8, 8 is ran through the program, and it outputs all the necessary data as stated in the aforementioned *Output Data*.
-
-TO 
