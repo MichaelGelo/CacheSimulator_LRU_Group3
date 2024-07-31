@@ -1,4 +1,3 @@
-Magdadagdag pa ako ng info after ng final iteration ng project.
 # Cache Simulator (LRU / Full Associativity)
 Authors: 
 - **Agustines**, Alfred Bastin
